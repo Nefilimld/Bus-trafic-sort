@@ -228,6 +228,21 @@ class BusGame {
             shopModal.classList.add('hidden');
         };
 
+        // Booster Modal Close & Action Handlers
+        const boosterModal = document.getElementById('modal-booster-purchase');
+        document.getElementById('btn-close-booster-modal').onclick = () => {
+            window.soundManager.playClick();
+            boosterModal.classList.add('hidden');
+        };
+
+        document.getElementById('btn-booster-buy-coins').onclick = () => {
+            this.onBoosterModalBuyCoins();
+        };
+
+        document.getElementById('btn-booster-buy-ad').onclick = () => {
+            this.onBoosterModalBuyAd();
+        };
+
         // Shop Buy Items
         document.getElementById('btn-buy-sort').onclick = () => {
             if (this.coins >= 50) {
@@ -381,6 +396,106 @@ class BusGame {
         };
     }
 
+    /**
+     * Open Booster Purchase Modal (Exact replica of Reference Screenshot)
+     */
+    openBoosterModal(boosterType) {
+        this.currentBoosterModalType = boosterType;
+        const modal = document.getElementById('modal-booster-purchase');
+        const titleEl = document.getElementById('booster-modal-title');
+        const descEl = document.getElementById('booster-modal-desc');
+        const costEl = document.getElementById('booster-modal-coin-cost');
+        const iconContainer = document.getElementById('booster-modal-icon-container');
+
+        window.soundManager.playClick();
+
+        if (boosterType === 'sort') {
+            titleEl.innerText = 'Sort';
+            descEl.innerText = 'Заполнить все автобусы на парковке';
+            costEl.innerText = '50';
+            this.currentBoosterCost = 50;
+            iconContainer.innerHTML = `
+                <svg viewBox="0 0 100 100" width="90" height="90">
+                    <rect x="20" y="32" width="60" height="38" rx="8" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+                    <rect x="25" y="38" width="16" height="14" rx="3" fill="#0f172a"/>
+                    <rect x="46" y="38" width="14" height="14" rx="3" fill="#0f172a"/>
+                    <rect x="64" y="38" width="12" height="14" rx="3" fill="#0f172a"/>
+                    <circle cx="34" cy="70" r="7" fill="#1e293b" stroke="#ffffff" stroke-width="2"/>
+                    <circle cx="66" cy="70" r="7" fill="#1e293b" stroke="#ffffff" stroke-width="2"/>
+                    <!-- Little passengers jumping in -->
+                    <circle cx="16" cy="54" r="6" fill="#ef4444"/>
+                    <circle cx="28" cy="22" r="6" fill="#3b82f6"/>
+                    <circle cx="52" cy="22" r="6" fill="#10b981"/>
+                    <circle cx="72" cy="24" r="6" fill="#ec4899"/>
+                </svg>
+            `;
+        } else if (boosterType === 'slot') {
+            titleEl.innerText = '+1 Slot';
+            descEl.innerText = 'Открыть дополнительное парковочное место';
+            costEl.innerText = '75';
+            this.currentBoosterCost = 75;
+            iconContainer.innerHTML = `
+                <svg viewBox="0 0 100 100" width="90" height="90">
+                    <rect x="18" y="24" width="64" height="52" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="4"/>
+                    <path d="M50 32 V68 M32 50 H68" stroke="#facc15" stroke-width="8" stroke-linecap="round"/>
+                </svg>
+            `;
+        } else if (boosterType === 'heli') {
+            titleEl.innerText = 'Helicopter';
+            descEl.innerText = 'Эвакуировать любой заблокированный автобус';
+            costEl.innerText = '100';
+            this.currentBoosterCost = 100;
+            iconContainer.innerHTML = `
+                <svg viewBox="0 0 100 100" width="90" height="90">
+                    <path d="M20 26 H80" stroke="#f8fafc" stroke-width="5" stroke-linecap="round"/>
+                    <ellipse cx="48" cy="46" rx="26" ry="16" fill="#3b82f6" stroke="#1d4ed8" stroke-width="3"/>
+                    <rect x="12" y="42" width="22" height="6" rx="3" fill="#60a5fa"/>
+                    <rect x="42" y="60" width="8" height="12" fill="#0f172a"/>
+                    <rect x="28" y="72" width="40" height="4" rx="2" fill="#0f172a"/>
+                    <circle cx="60" cy="45" r="7" fill="#fef08a"/>
+                </svg>
+            `;
+        }
+
+        modal.classList.remove('hidden');
+    }
+
+    onBoosterModalBuyCoins() {
+        const cost = this.currentBoosterCost || 50;
+        if (this.coins >= cost) {
+            this.coins -= cost;
+            this.updateCoinDisplay();
+            window.soundManager.playCoin();
+            document.getElementById('modal-booster-purchase').classList.add('hidden');
+
+            if (this.currentBoosterModalType === 'sort') {
+                this.applyQueueSort();
+            } else if (this.currentBoosterModalType === 'slot') {
+                this.unlockExtraSlot();
+            } else if (this.currentBoosterModalType === 'heli') {
+                this.activateHeliMode();
+            }
+            this.persistSaveData();
+        } else {
+            this.showToast('Недостаточно монет! Посмотрите видео 📺');
+        }
+    }
+
+    onBoosterModalBuyAd() {
+        window.soundManager.playClick();
+        window.yandexBridge.showRewardedVideo(() => {
+            document.getElementById('modal-booster-purchase').classList.add('hidden');
+            if (this.currentBoosterModalType === 'sort') {
+                this.applyQueueSort();
+            } else if (this.currentBoosterModalType === 'slot') {
+                this.unlockExtraSlot();
+            } else if (this.currentBoosterModalType === 'heli') {
+                this.activateHeliMode();
+            }
+            this.persistSaveData();
+        });
+    }
+
     updateBoosterUI() {
         const checkBooster = (id, badgeId, key, minLevel) => {
             const btn = document.getElementById(id);
@@ -409,7 +524,18 @@ class BusGame {
 
             for (const hit of intersects) {
                 let obj = hit.object;
+
+                // Check if clicking on locked parking slot
+                if (obj.userData && obj.userData.isSlot && !obj.userData.isUnlocked) {
+                    this.openBoosterModal('slot');
+                    return;
+                }
+
                 while (obj && obj.parent && obj.name !== 'bus') {
+                    if (obj.userData && obj.userData.isSlot && !obj.userData.isUnlocked) {
+                        this.openBoosterModal('slot');
+                        return;
+                    }
                     obj = obj.parent;
                 }
 
@@ -857,18 +983,7 @@ class BusGame {
             this.persistSaveData();
             this.applyQueueSort();
         } else {
-            // If out of charges -> offer buy for coins or ad
-            if (this.coins >= 50) {
-                this.coins -= 50;
-                this.updateCoinDisplay();
-                this.persistSaveData();
-                this.applyQueueSort();
-                this.showToast('Сортировка куплена за 50 🟡!');
-            } else {
-                window.yandexBridge.showRewardedVideo(() => {
-                    this.applyQueueSort();
-                });
-            }
+            this.openBoosterModal('sort');
         }
     }
 
@@ -923,17 +1038,7 @@ class BusGame {
             this.persistSaveData();
             this.unlockExtraSlot();
         } else {
-            if (this.coins >= 75) {
-                this.coins -= 75;
-                this.updateCoinDisplay();
-                this.persistSaveData();
-                this.unlockExtraSlot();
-                this.showToast('+1 Место куплено за 75 🟡!');
-            } else {
-                window.yandexBridge.showRewardedVideo(() => {
-                    this.unlockExtraSlot();
-                });
-            }
+            this.openBoosterModal('slot');
         }
     }
 
@@ -944,6 +1049,7 @@ class BusGame {
         window.soundManager.playBooster();
         lockedSlot.isUnlocked = true;
         lockedSlot.mesh.material = window.modelBuilder.materials.slotActive;
+        lockedSlot.mesh.userData.isUnlocked = true;
         if (lockedSlot.mesh.userData.plusMesh) {
             lockedSlot.mesh.userData.plusMesh.visible = false;
         }
@@ -964,22 +1070,7 @@ class BusGame {
         if (this.boosters.heli > 0) {
             this.activateHeliMode();
         } else {
-            if (this.coins >= 100) {
-                this.coins -= 100;
-                this.boosters.heli++;
-                this.updateCoinDisplay();
-                this.updateBoosterUI();
-                this.persistSaveData();
-                this.activateHeliMode();
-                this.showToast('Полёт куплен за 100 🟡!');
-            } else {
-                window.yandexBridge.showRewardedVideo(() => {
-                    this.boosters.heli++;
-                    this.updateBoosterUI();
-                    this.persistSaveData();
-                    this.activateHeliMode();
-                });
-            }
+            this.openBoosterModal('heli');
         }
     }
 

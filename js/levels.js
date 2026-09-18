@@ -1688,10 +1688,29 @@ class LevelManager {
      * Get Level by number (Handcrafted for 1-10, Procedural for 11+)
      */
     static getLevel(levelNum) {
+        let levelData;
         if (levelNum <= HANDCRAFTED_LEVELS.length) {
-            return HANDCRAFTED_LEVELS[levelNum - 1];
+            levelData = JSON.parse(JSON.stringify(HANDCRAFTED_LEVELS[levelNum - 1]));
+        } else {
+            levelData = LevelManager.generateProceduralLevel(levelNum);
         }
-        return LevelManager.generateProceduralLevel(levelNum);
+
+        // Milestone slot unlocks:
+        // Level 1-2: 4 active slots (3 locked)
+        // Level 3-4: 5 active slots (Slot 5 unlocked at Level 3)
+        // Level 5-6: 6 active slots (Slot 6 unlocked at Level 5)
+        // Level 7+: 7 active slots (Slot 7 unlocked at Level 7)
+        if (levelNum >= 7) {
+            levelData.activeSlots = 7;
+        } else if (levelNum >= 5) {
+            levelData.activeSlots = 6;
+        } else if (levelNum >= 3) {
+            levelData.activeSlots = 5;
+        } else {
+            levelData.activeSlots = 4;
+        }
+
+        return levelData;
     }
 
     /**

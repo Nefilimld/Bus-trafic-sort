@@ -53,12 +53,12 @@ body, html {
     display: block;
 }
 
-/* Top Navigation Bar */
+/* Top Navigation Bar - Juicy 3D Casual Style */
 #top-bar {
     position: absolute;
-    top: 16px;
-    left: 16px;
-    right: 16px;
+    top: 14px;
+    left: 14px;
+    right: 14px;
     z-index: 10;
     display: flex;
     justify-content: space-between;
@@ -71,64 +71,95 @@ body, html {
 }
 
 .circle-btn {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: #ffffff;
-    border: 3px solid #3b82f6;
-    color: #1e40af;
+    background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+    border: 3px solid #bae6fd;
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.1s ease, background 0.1s ease;
+    box-shadow: 0 5px 0 #0369a1, 0 8px 16px rgba(0, 0, 0, 0.25);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .circle-btn:active {
-    transform: scale(0.92);
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #0369a1, 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.circle-btn svg {
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
 }
 
 #level-indicator {
-    background: #ffffff;
-    padding: 6px 18px;
-    border-radius: 20px;
-    border: 3px solid #3b82f6;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+    padding: 6px 20px;
+    border-radius: 24px;
+    border: 3px solid #60a5fa;
+    box-shadow: 0 5px 0 #2563eb, 0 8px 16px rgba(37, 99, 235, 0.25);
 }
 
 #level-title {
-    font-size: 1.1rem;
-    font-weight: 800;
+    font-size: 1.15rem;
+    font-weight: 900;
     color: #1e3a8a;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .top-right-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 #coin-badge {
-    background: #ffffff;
-    border: 3px solid #f59e0b;
-    border-radius: 20px;
-    padding: 4px 12px 4px 8px;
+    background: linear-gradient(180deg, #fef08a 0%, #f59e0b 100%);
+    border: 3px solid #ffffff;
+    border-radius: 24px;
+    padding: 4px 14px 4px 10px;
     display: flex;
     align-items: center;
-    gap: 5px;
-    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.25);
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #d97706, 0 8px 16px rgba(217, 119, 6, 0.3);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+#coin-badge:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #d97706, 0 3px 6px rgba(217, 119, 6, 0.3);
 }
 
 .coin-icon {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
 }
 
 #coin-count {
-    font-weight: 800;
-    color: #b45309;
-    font-size: 1rem;
+    font-weight: 900;
+    color: #78350f;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.coin-plus {
+    background: #10b981;
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 900;
+    margin-left: 2px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* Toast Notification */
@@ -137,15 +168,17 @@ body, html {
     top: 80px;
     left: 50%;
     transform: translateX(-50%) translateY(-20px);
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(15, 23, 42, 0.92);
     color: #ffffff;
-    padding: 8px 18px;
-    border-radius: 24px;
+    padding: 10px 22px;
+    border-radius: 28px;
     font-size: 0.95rem;
-    font-weight: 700;
+    font-weight: 800;
     z-index: 100;
     opacity: 0;
     pointer-events: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -154,17 +187,17 @@ body, html {
     transform: translateX(-50%) translateY(0);
 }
 
-/* Bottom Booster Dock */
+/* Bottom Booster Dock - Juicy 3D Style */
 #bottom-bar, #booster-bar {
     position: absolute;
     bottom: 16px;
-    left: 16px;
-    right: 16px;
+    left: 14px;
+    right: 14px;
     z-index: 10;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     pointer-events: none;
 }
 
@@ -172,57 +205,60 @@ body, html {
     pointer-events: auto;
     position: relative;
     flex: 1;
-    max-width: 80px;
-    height: 72px;
-    background: #ffffff;
+    max-width: 82px;
+    height: 76px;
+    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
     border: 3px solid #cbd5e1;
-    border-radius: 16px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
-    transition: transform 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 6px 0 #94a3b8, 0 10px 18px rgba(0, 0, 0, 0.15);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
 }
 
 .booster-btn:not(.locked):active {
-    transform: scale(0.92);
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #94a3b8, 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .booster-btn.active {
     border-color: #3b82f6;
-    background: #eff6ff;
-    box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+    background: linear-gradient(180deg, #eff6ff 0%, #bfdbfe 100%);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.6), 0 6px 0 #2563eb;
 }
 
 .booster-icon {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
 }
 
 .booster-label {
-    font-size: 0.72rem;
-    font-weight: 800;
-    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: #334155;
     margin-top: 2px;
+    letter-spacing: 0.2px;
 }
 
 .booster-badge {
     position: absolute;
     top: -6px;
     right: -6px;
-    background: #10b981;
+    background: linear-gradient(180deg, #34d399 0%, #059669 100%);
     color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 800;
-    width: 22px;
-    height: 22px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: 2.5px solid #ffffff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 /* Booster Lock Overlay */
@@ -233,7 +269,7 @@ body, html {
     right: 0;
     bottom: 0;
     background: rgba(226, 232, 240, 0.95);
-    border-radius: 13px;
+    border-radius: 17px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -246,22 +282,184 @@ body, html {
 }
 
 .lock-icon {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
 }
 
 .lock-text {
-    font-size: 0.65rem;
-    font-weight: 800;
-    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 900;
+    color: #475569;
 }
 
 .shop-btn {
-    border-color: #fbbf24;
-    background: #fffbeb;
+    border-color: #fef08a;
+    background: linear-gradient(180deg, #fffbeb 0%, #fef08a 100%);
+    box-shadow: 0 6px 0 #d97706, 0 10px 18px rgba(217, 119, 6, 0.2);
 }
 
 .shop-btn .booster-label {
-    color: #b45309;
+    color: #92400e;
+}
+
+/* -------------------------------------------------------------
+   MODAL: BOOSTER PURCHASE (Exact match to Reference Screenshot)
+---------------------------------------------------------------- */
+.booster-modal-card {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+    border-radius: 28px;
+    border: 4px solid #facc15;
+    box-shadow: 0 0 0 2px #ca8a04, 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    padding: 16px 14px 20px;
+    text-align: center;
+}
+
+/* Header */
+.booster-card-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-top: 4px;
+}
+
+.booster-header-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    letter-spacing: 0.5px;
+}
+
+.booster-modal-close {
+    position: absolute;
+    right: -2px;
+    top: -4px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+    border: 3px solid #ffffff;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #991b1b, 0 6px 12px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s;
+}
+
+.booster-modal-close:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #991b1b;
+}
+
+/* Cream Body */
+.booster-card-body {
+    background: #fffbeb;
+    border-radius: 22px;
+    border: 2px solid #fef08a;
+    padding: 24px 16px 20px;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+}
+
+.booster-emblem-circle {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+    border: 6px solid #e0f2fe;
+    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.4), inset 0 -4px 6px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.booster-emblem-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+}
+
+.booster-emblem-art svg {
+    width: 100px;
+    height: 100px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.booster-card-desc {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #78350f;
+    line-height: 1.35;
+    max-width: 260px;
+    margin: 0 auto;
+}
+
+/* Action Buttons */
+.booster-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.booster-action-btn {
+    width: 85%;
+    padding: 12px 20px;
+    border-radius: 24px;
+    font-size: 1.35rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.coin-btn {
+    background: linear-gradient(180deg, #84cc16 0%, #65a30d 100%);
+    border: 3.5px solid #bef264;
+    color: #ffffff;
+    box-shadow: 0 6px 0 #3f6212, 0 10px 20px rgba(0, 0, 0, 0.35);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+.coin-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #3f6212, 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+
+.ad-btn {
+    background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+    border: 3px solid #93c5fd;
+    color: #ffffff;
+    box-shadow: 0 5px 0 #1e3a8a, 0 8px 16px rgba(0, 0, 0, 0.3);
+    font-size: 1.15rem;
+    padding: 10px 18px;
+}
+
+.ad-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #1e3a8a;
+}
+
+.coin-icon-3d {
+    font-size: 1.4rem;
+}
+
+.ad-icon-3d {
+    font-size: 1.2rem;
 }
 
 /* Modals & Dialogs */

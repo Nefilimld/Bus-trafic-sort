@@ -42,12 +42,13 @@ class ModelBuilder {
 
         // Shared geometries
         this.geos = {
-            wheel: new THREE.CylinderGeometry(0.18, 0.18, 0.1, 10).rotateZ(Math.PI / 2),
-            hubcap: new THREE.CylinderGeometry(0.08, 0.08, 0.11, 8).rotateZ(Math.PI / 2),
-            headlight: new THREE.BoxGeometry(0.18, 0.12, 0.04),
-            passengerBody: new THREE.CylinderGeometry(0.12, 0.1, 0.28, 8),
-            passengerHead: new THREE.SphereGeometry(0.12, 8, 8),
-            passengerCap: new THREE.SphereGeometry(0.125, 8, 8, 0, Math.PI * 2, 0, Math.PI * 0.45)
+            wheel: new THREE.CylinderGeometry(0.15, 0.15, 0.08, 10).rotateZ(Math.PI / 2),
+            hubcap: new THREE.CylinderGeometry(0.06, 0.06, 0.09, 8).rotateZ(Math.PI / 2),
+            headlight: new THREE.BoxGeometry(0.14, 0.10, 0.04),
+            passengerBody: new THREE.CylinderGeometry(0.10, 0.09, 0.22, 8),
+            passengerHead: new THREE.SphereGeometry(0.10, 8, 8),
+            passengerCap: new THREE.SphereGeometry(0.105, 8, 8, 0, Math.PI * 2, 0, Math.PI * 0.45),
+            passengerArm: new THREE.CylinderGeometry(0.035, 0.035, 0.16, 6)
         };
 
         // Color materials
@@ -58,79 +59,79 @@ class ModelBuilder {
 
         // Roof arrow geo
         const arrowShape = new THREE.Shape();
-        arrowShape.moveTo(0, -0.4);
-        arrowShape.lineTo(0.25, 0);
-        arrowShape.lineTo(0.12, 0);
-        arrowShape.lineTo(0.12, 0.4);
-        arrowShape.lineTo(-0.12, 0.4);
-        arrowShape.lineTo(-0.12, 0);
-        arrowShape.lineTo(-0.25, 0);
+        arrowShape.moveTo(0, -0.32);
+        arrowShape.lineTo(0.20, 0);
+        arrowShape.lineTo(0.09, 0);
+        arrowShape.lineTo(0.09, 0.32);
+        arrowShape.lineTo(-0.09, 0.32);
+        arrowShape.lineTo(-0.09, 0);
+        arrowShape.lineTo(-0.20, 0);
         arrowShape.closePath();
         this.geos.arrow = new THREE.ShapeGeometry(arrowShape);
     }
 
     /**
-     * Create Bus 3D Group
+     * Create Bus 3D Group (Compact, stylish casual bus)
      */
-    createBus(colorKey, capacity = 24, lengthType = 'normal') {
+    createBus(colorKey, capacity = 20, lengthType = 'normal') {
         const group = new THREE.Group();
         group.name = 'bus';
 
         const bodyMat = this.colorMaterials[colorKey] || this.colorMaterials.red;
-        const length = lengthType === 'long' ? 2.4 : 1.7;
-        const width = 0.95;
-        const height = 0.85;
+        const length = lengthType === 'long' ? 1.95 : 1.35;
+        const width = 0.82;
+        const height = 0.72;
 
         // 1. Body
         const bodyGeo = new THREE.BoxGeometry(width, height, length);
         const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-        bodyMesh.position.y = height / 2 + 0.15;
+        bodyMesh.position.y = height / 2 + 0.12;
         bodyMesh.castShadow = true;
         group.add(bodyMesh);
 
         // 2. Windows
-        const frontGlassGeo = new THREE.BoxGeometry(width * 0.9, height * 0.45, 0.05);
+        const frontGlassGeo = new THREE.BoxGeometry(width * 0.88, height * 0.45, 0.05);
         const frontGlass = new THREE.Mesh(frontGlassGeo, this.materials.window);
-        frontGlass.position.set(0, height * 0.7 + 0.15, -length / 2 - 0.01);
+        frontGlass.position.set(0, height * 0.68 + 0.12, -length / 2 - 0.01);
         group.add(frontGlass);
 
-        const rearGlassGeo = new THREE.BoxGeometry(width * 0.85, height * 0.4, 0.05);
+        const rearGlassGeo = new THREE.BoxGeometry(width * 0.84, height * 0.4, 0.05);
         const rearGlass = new THREE.Mesh(rearGlassGeo, this.materials.window);
-        rearGlass.position.set(0, height * 0.7 + 0.15, length / 2 + 0.01);
+        rearGlass.position.set(0, height * 0.68 + 0.12, length / 2 + 0.01);
         group.add(rearGlass);
 
-        const sideGlassGeo = new THREE.BoxGeometry(0.05, height * 0.35, length * 0.75);
+        const sideGlassGeo = new THREE.BoxGeometry(0.05, height * 0.35, length * 0.72);
         const leftGlass = new THREE.Mesh(sideGlassGeo, this.materials.window);
-        leftGlass.position.set(-width / 2 - 0.01, height * 0.7 + 0.15, 0);
+        leftGlass.position.set(-width / 2 - 0.01, height * 0.68 + 0.12, 0);
         group.add(leftGlass);
 
         const rightGlass = new THREE.Mesh(sideGlassGeo, this.materials.window);
-        rightGlass.position.set(width / 2 + 0.01, height * 0.7 + 0.15, 0);
+        rightGlass.position.set(width / 2 + 0.01, height * 0.68 + 0.12, 0);
         group.add(rightGlass);
 
         // 3. Headlights & Taillights
         const hl1 = new THREE.Mesh(this.geos.headlight, this.materials.headlight);
-        hl1.position.set(-width * 0.35, 0.35, -length / 2 - 0.01);
+        hl1.position.set(-width * 0.32, 0.28, -length / 2 - 0.01);
         const hl2 = new THREE.Mesh(this.geos.headlight, this.materials.headlight);
-        hl2.position.set(width * 0.35, 0.35, -length / 2 - 0.01);
+        hl2.position.set(width * 0.32, 0.28, -length / 2 - 0.01);
         group.add(hl1, hl2);
 
         const tl1 = new THREE.Mesh(this.geos.headlight, this.materials.taillight);
-        tl1.position.set(-width * 0.35, 0.35, length / 2 + 0.01);
+        tl1.position.set(-width * 0.32, 0.28, length / 2 + 0.01);
         const tl2 = new THREE.Mesh(this.geos.headlight, this.materials.taillight);
-        tl2.position.set(width * 0.35, 0.35, length / 2 + 0.01);
+        tl2.position.set(width * 0.32, 0.28, length / 2 + 0.01);
         group.add(tl1, tl2);
 
         // 4. Wheels
-        const wheelZOffsets = lengthType === 'long' ? [-0.8, 0.8] : [-0.5, 0.5];
+        const wheelZOffsets = lengthType === 'long' ? [-0.65, 0.65] : [-0.42, 0.42];
         wheelZOffsets.forEach(z => {
             const wL = new THREE.Mesh(this.geos.wheel, this.materials.wheel);
-            wL.position.set(-width / 2 - 0.02, 0.18, z);
+            wL.position.set(-width / 2 - 0.02, 0.14, z);
             const hubL = new THREE.Mesh(this.geos.hubcap, this.materials.hubcap);
             wL.add(hubL);
 
             const wR = new THREE.Mesh(this.geos.wheel, this.materials.wheel);
-            wR.position.set(width / 2 + 0.02, 0.18, z);
+            wR.position.set(width / 2 + 0.02, 0.14, z);
             const hubR = new THREE.Mesh(this.geos.hubcap, this.materials.hubcap);
             wR.add(hubR);
 
@@ -141,7 +142,7 @@ class ModelBuilder {
         const arrowMesh = new THREE.Mesh(this.geos.arrow, this.materials.arrow);
         arrowMesh.rotation.x = -Math.PI / 2;
         arrowMesh.rotation.z = Math.PI;
-        arrowMesh.position.set(0, height + 0.17, 0);
+        arrowMesh.position.set(0, height + 0.14, 0);
         group.add(arrowMesh);
 
         // 6. Capacity Badge
@@ -153,13 +154,13 @@ class ModelBuilder {
         const badgeTex = new THREE.CanvasTexture(badgeCanvas);
         const badgeMat = new THREE.SpriteMaterial({ map: badgeTex, depthTest: false });
         const badgeSprite = new THREE.Sprite(badgeMat);
-        badgeSprite.scale.set(1.1, 0.55, 1);
-        badgeSprite.position.set(0, height + 0.65, 0);
+        badgeSprite.scale.set(0.95, 0.48, 1);
+        badgeSprite.position.set(0, height + 0.55, 0);
         group.add(badgeSprite);
 
         const updateCapacity = (rem) => {
             badgeCtx.clearRect(0, 0, 128, 64);
-            badgeCtx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+            badgeCtx.fillStyle = 'rgba(15, 23, 42, 0.90)';
             badgeCtx.beginPath();
             badgeCtx.roundRect(8, 8, 112, 48, 24);
             badgeCtx.fill();
@@ -193,7 +194,7 @@ class ModelBuilder {
     }
 
     /**
-     * Create Passenger
+     * Create Stylized Humanoid Passenger
      */
     createPassenger(colorKey) {
         const group = new THREE.Group();
@@ -201,17 +202,38 @@ class ModelBuilder {
 
         const bodyMat = this.colorMaterials[colorKey] || this.colorMaterials.red;
 
+        // Torso
         const bodyMesh = new THREE.Mesh(this.geos.passengerBody, bodyMat);
-        bodyMesh.position.y = 0.18;
+        bodyMesh.position.y = 0.16;
+        bodyMesh.castShadow = true;
         group.add(bodyMesh);
 
+        // Head
         const headMesh = new THREE.Mesh(this.geos.passengerHead, this.materials.skin);
-        headMesh.position.y = 0.39;
+        headMesh.position.y = 0.35;
+        headMesh.castShadow = true;
         group.add(headMesh);
 
+        // Cap with visor
         const capMesh = new THREE.Mesh(this.geos.passengerCap, bodyMat);
-        capMesh.position.y = 0.41;
+        capMesh.position.y = 0.37;
         group.add(capMesh);
+
+        const visorGeo = new THREE.BoxGeometry(0.12, 0.02, 0.08);
+        const visorMesh = new THREE.Mesh(visorGeo, bodyMat);
+        visorMesh.position.set(0, 0.36, -0.09);
+        group.add(visorMesh);
+
+        // Left & Right Arms
+        const armL = new THREE.Mesh(this.geos.passengerArm, bodyMat);
+        armL.position.set(-0.13, 0.15, 0);
+        armL.rotation.z = 0.15;
+        group.add(armL);
+
+        const armR = new THREE.Mesh(this.geos.passengerArm, bodyMat);
+        armR.position.set(0.13, 0.15, 0);
+        armR.rotation.z = -0.15;
+        group.add(armR);
 
         group.userData = {
             color: colorKey,
@@ -222,50 +244,55 @@ class ModelBuilder {
     }
 
     /**
-     * Create Parking Area
+     * Create Parking Area with 7 slots (4 free, 3 unlockable)
      */
     createParkingArea(totalSlots = 7, activeSlots = 4) {
         const group = new THREE.Group();
 
-        const baseGeo = new THREE.BoxGeometry(9.2, 0.15, 2.6);
+        const baseGeo = new THREE.BoxGeometry(8.2, 0.14, 2.3);
         const baseMesh = new THREE.Mesh(baseGeo, this.materials.curb);
         baseMesh.position.set(0, -0.05, 0);
         baseMesh.receiveShadow = true;
         group.add(baseMesh);
 
         const slotMeshes = [];
-        const slotWidth = 1.15;
+        const slotWidth = 1.05;
         const startX = -((totalSlots - 1) * slotWidth) / 2;
 
         for (let i = 0; i < totalSlots; i++) {
             const posX = startX + i * slotWidth;
             const isUnlocked = i < activeSlots;
 
-            const slotGeo = new THREE.BoxGeometry(1.0, 0.05, 2.1);
+            const slotGeo = new THREE.BoxGeometry(0.92, 0.05, 1.85);
             const slotMat = isUnlocked ? this.materials.slotActive : this.materials.slotLocked;
             const slotMesh = new THREE.Mesh(slotGeo, slotMat);
             slotMesh.position.set(posX, 0.06, 0);
+            slotMesh.userData = {
+                isSlot: true,
+                slotIndex: i,
+                isUnlocked: isUnlocked
+            };
             group.add(slotMesh);
 
-            const lineGeo = new THREE.BoxGeometry(1.04, 0.06, 0.06);
+            const lineGeo = new THREE.BoxGeometry(0.94, 0.06, 0.05);
             const lineMesh = new THREE.Mesh(lineGeo, this.materials.arrow);
-            lineMesh.position.set(posX, 0.07, -1.02);
+            lineMesh.position.set(posX, 0.07, -0.90);
             group.add(lineMesh);
 
             if (!isUnlocked) {
                 const plusShape = new THREE.Shape();
-                plusShape.moveTo(-0.05, 0.18);
-                plusShape.lineTo(0.05, 0.18);
-                plusShape.lineTo(0.05, 0.05);
-                plusShape.lineTo(0.18, 0.05);
-                plusShape.lineTo(0.18, -0.05);
-                plusShape.lineTo(0.05, -0.05);
-                plusShape.lineTo(0.05, -0.18);
-                plusShape.lineTo(-0.05, -0.18);
-                plusShape.lineTo(-0.05, -0.05);
-                plusShape.lineTo(-0.18, -0.05);
-                plusShape.lineTo(-0.18, 0.05);
-                plusShape.lineTo(-0.05, 0.05);
+                plusShape.moveTo(-0.04, 0.15);
+                plusShape.lineTo(0.04, 0.15);
+                plusShape.lineTo(0.04, 0.04);
+                plusShape.lineTo(0.15, 0.04);
+                plusShape.lineTo(0.15, -0.04);
+                plusShape.lineTo(0.04, -0.04);
+                plusShape.lineTo(0.04, -0.15);
+                plusShape.lineTo(-0.04, -0.15);
+                plusShape.lineTo(-0.04, -0.04);
+                plusShape.lineTo(-0.15, -0.04);
+                plusShape.lineTo(-0.15, 0.04);
+                plusShape.lineTo(-0.04, 0.04);
                 plusShape.closePath();
 
                 const plusGeo = new THREE.ShapeGeometry(plusShape);

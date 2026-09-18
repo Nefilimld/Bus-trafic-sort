@@ -91,6 +91,42 @@
             </button>
         </footer>
 
+        <!-- MODAL: Booster Purchase (Exact replica of Reference Screenshot) -->
+        <div id="modal-booster-purchase" class="modal-backdrop hidden">
+            <div class="booster-modal-card animate-pop">
+                <!-- Royal Blue Arched Header with Gold Double-Trim -->
+                <div class="booster-card-header">
+                    <span id="booster-modal-title" class="booster-header-title">Sort</span>
+                    <button class="booster-modal-close" id="btn-close-booster-modal">✕</button>
+                </div>
+
+                <!-- Cream/Parchment Inner Container -->
+                <div class="booster-card-body">
+                    <!-- Circular Framed Emblem -->
+                    <div class="booster-emblem-circle">
+                        <div id="booster-modal-icon-container" class="booster-emblem-art">
+                            <!-- Dynamic illustration injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <p id="booster-modal-desc" class="booster-card-desc">
+                        Fill all the trucks in the dock
+                    </p>
+                </div>
+
+                <!-- Action Buttons: Juicy 3D Green Coin & Blue Ad Buttons -->
+                <div class="booster-card-actions">
+                    <button id="btn-booster-buy-coins" class="booster-action-btn coin-btn">
+                        <span class="coin-icon-3d">🪙</span> <span id="booster-modal-coin-cost">200</span>
+                    </button>
+                    <button id="btn-booster-buy-ad" class="booster-action-btn ad-btn">
+                        <span class="ad-icon-3d">📺</span> Бесплатно
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- MODAL: Shop & Upgrades (Прокачка за монеты) -->
         <div id="modal-shop" class="modal-backdrop hidden">
             <div class="modal-card casual-card shop-modal-card">
